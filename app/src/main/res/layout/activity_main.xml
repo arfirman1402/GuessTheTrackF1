@@ -1,13 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
     tools:context="io.arfirman1402.dev.guessthetrackf1.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@android:color/holo_blue_dark"
+        android:padding="4dp">
 
-</RelativeLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:background="@android:color/white"
+            android:scaleType="fitXY"
+            android:src="@drawable/aintree" />
+    </RelativeLayout>
+
+    <Button
+        style="@style/Base.TextAppearance.AppCompat.Widget.Button.Inverse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Albert Park" />
+
+    <Button
+        style="@style/Base.TextAppearance.AppCompat.Widget.Button.Inverse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Aintree" />
+
+    <Button
+        style="@style/Base.TextAppearance.AppCompat.Widget.Button.Inverse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Autódromo do Estoril" />
+
+    <Button
+        style="@style/Base.TextAppearance.AppCompat.Widget.Button.Inverse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Autódromo José Carlos Pace" />
+</LinearLayout>
