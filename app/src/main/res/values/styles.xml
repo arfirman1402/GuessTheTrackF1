@@ -13,4 +13,6 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme.Button" parent="Base.TextAppearance.AppCompat.Widget.Button.Inverse" />
+
 </resources>
