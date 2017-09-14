@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -29,6 +30,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int number;
     private Question question;
     private int score;
+    private long timeInMillisStart;
+    private long timeInMillisEnd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         questions = CommonFunction.getQuestions();
         number = 0;
         score = 0;
+        timeInMillisStart = GregorianCalendar.getInstance().getTimeInMillis();
         setQuestion();
     }
 
@@ -109,8 +113,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void finishQuiz() {
+        timeInMillisEnd = GregorianCalendar.getInstance().getTimeInMillis();
+        long timeInMilisDelta = timeInMillisEnd - timeInMillisStart;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Congrats, you finish the race. Your score = " + score + ". Wanna try again ?");
+        builder.setMessage("Congrats, you finish the race. Your score = " + score + ". Your time = " + ((double) timeInMilisDelta / (double) 1000) + " s . Wanna try again ?");
         builder.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
