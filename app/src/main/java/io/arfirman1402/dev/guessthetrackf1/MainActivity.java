@@ -1,6 +1,8 @@
 package io.arfirman1402.dev.guessthetrackf1;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -12,13 +14,21 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.arfirman1402.dev.guessthetrackf1.model.Question;
+import io.arfirman1402.dev.guessthetrackf1.model.Track;
+import io.arfirman1402.dev.guessthetrackf1.util.CommonFunction;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     @BindView(R.id.main_track_image)
     ImageView mainTrackImage;
+
     private Track finalAnswer;
-    private List<Track> trackAnswers;
     private List<Button> buttons;
+
+    private List<Question> questions;
+    private int number;
+    private Question question;
+    private int score;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +36,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         initView();
 
+        getQuestion();
+    }
+
+    private void getQuestion() {
+        questions = CommonFunction.getQuestions();
+        number = 0;
+        score = 0;
         setQuestion();
     }
 
     private void setQuestion() {
+        question = questions.get(number);
+
+        for (int i = 0; i < question.getOptionCount(); i++) {
+            buttons.get(i).setText(question.getOptions().get(i).getCircuit());
+        }
+
+        finalAnswer = question.getAnswer();
+
+        mainTrackImage.setImageResource(finalAnswer.getMap());
+    }
+
+    private void initView() {
+        ButterKnife.bind(this);
+
         int[] buttonIds = new int[]{R.id.main_answer_a, R.id.main_answer_b, R.id.main_answer_c, R.id.main_answer_d};
 
         buttons = new ArrayList<>();
@@ -39,23 +70,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             button.setOnClickListener(this);
             buttons.add(button);
         }
-
-        List<Track> tracks = CommonFunction.getTracks();
-        trackAnswers = new ArrayList<>();
-
-        for (Button button : buttons) {
-            Track track = tracks.remove((int) (Math.random() * tracks.size()));
-            trackAnswers.add(track);
-            button.setText(track.getCircuit());
-        }
-
-        finalAnswer = trackAnswers.get((int) (Math.random() * trackAnswers.size()));
-
-        mainTrackImage.setImageResource(finalAnswer.getMap());
-    }
-
-    private void initView() {
-        ButterKnife.bind(this);
     }
 
     @Override
@@ -79,12 +93,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void userChoose(int i) {
-        Track userChoosedTrack = trackAnswers.get(i);
+        Track userChoosedTrack = question.getOptions().get(i);
         if (userChoosedTrack.getId() == finalAnswer.getId()) {
             Toast.makeText(this, "Your answer is Right. Good One.", Toast.LENGTH_SHORT).show();
-            setQuestion();
+            score += 10;
         } else {
             Toast.makeText(this, "Still wrong answer. Try again.", Toast.LENGTH_SHORT).show();
         }
+        if (number < questions.size() - 1) {
+            number++;
+            setQuestion();
+        } else {
+            finishQuiz();
+        }
+    }
+
+    private void finishQuiz() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Congrats, you finish the race. Your score = " + score + ". Wanna try again ?");
+        builder.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                getQuestion();
+
+            }
+        });
+        builder.setNegativeButton("I Quit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+        builder.show();
     }
 }

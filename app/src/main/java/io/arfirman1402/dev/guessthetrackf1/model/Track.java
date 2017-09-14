@@ -1,4 +1,4 @@
-package io.arfirman1402.dev.guessthetrackf1;
+package io.arfirman1402.dev.guessthetrackf1.model;
 
 /**
  * Created by alodokter-it on 14/09/17 -- Track.

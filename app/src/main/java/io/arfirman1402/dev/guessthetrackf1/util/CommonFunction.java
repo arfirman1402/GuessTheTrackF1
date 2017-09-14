@@ -1,14 +1,22 @@
-package io.arfirman1402.dev.guessthetrackf1;
+package io.arfirman1402.dev.guessthetrackf1.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
+import io.arfirman1402.dev.guessthetrackf1.R;
+import io.arfirman1402.dev.guessthetrackf1.model.Question;
+import io.arfirman1402.dev.guessthetrackf1.model.Track;
 
 /**
  * Created by alodokter-it on 14/09/17 -- CommonFunction.
  */
 
 public class CommonFunction {
-    public static List<Track> getTracks() {
+    private static final int TOTAL_QUESTION = 10;
+    private static final int TOTAL_OPTION = 4;
+
+    private static List<Track> getTracks() {
         List<Track> tracks = new ArrayList<>();
         tracks.add(new Track(1, "Adelaide Street Circuit", R.drawable.adelaide_street_circuit, "Street circuit", "Clockwise", "Adelaide, Australia", "3.780 km (2.349 mi)", "Australian Grand Prix", "1985–1995", 11));
         tracks.add(new Track(2, "Ain-Diab Circuit", R.drawable.ain_diab_circuit, "Street circuit", "Clockwise", "Adelaide, Australia", "3.780 km (2.349 mi)", "Australian Grand Prix", "1985–1995", 11));
@@ -31,5 +39,45 @@ public class CommonFunction {
         tracks.add(new Track(19, "Charade Circuit", R.drawable.charade_circuit, "Street circuit", "Clockwise", "Adelaide, Australia", "3.780 km (2.349 mi)", "Australian Grand Prix", "1985–1995", 11));
         tracks.add(new Track(20, "Circuit Bremgarten", R.drawable.circuit_bremgarten, "Street circuit", "Clockwise", "Adelaide, Australia", "3.780 km (2.349 mi)", "Australian Grand Prix", "1985–1995", 11));
         return tracks;
+    }
+
+    public static List<Question> getQuestions() {
+        List<Question> questions = new ArrayList<>();
+        List<Track> questionAnswers = new ArrayList<>();
+
+        List<Track> tracks = getTracks();
+        for (int i = 0; i < TOTAL_QUESTION; i++) {
+            questionAnswers.add(tracks.remove((int) (Math.random() * tracks.size())));
+        }
+
+        for (Track questionAnswer : questionAnswers) {
+            String id = UUID.randomUUID().toString();
+            int optionCount = TOTAL_OPTION;
+            List<Track> options = new ArrayList<>();
+
+            List<Track> trackList = getTracks();
+
+            for (int i = 0; i < trackList.size(); i++) {
+                if (trackList.get(i).getId() == questionAnswer.getId()) {
+                    trackList.remove(i);
+                    break;
+                }
+            }
+
+            options.add(questionAnswer);
+
+            for (int i = 0; i < optionCount - 1; i++) {
+                options.add(trackList.remove((int) (Math.random() * trackList.size())));
+            }
+
+            List<Track> realOption = new ArrayList<>();
+
+            for (int i = 0; i < optionCount; i++) {
+                realOption.add(options.remove((int) (Math.random() * options.size())));
+            }
+
+            questions.add(new Question(id, optionCount, realOption, questionAnswer));
+        }
+        return questions;
     }
 }
