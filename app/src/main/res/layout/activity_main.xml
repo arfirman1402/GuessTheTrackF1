@@ -25,27 +25,31 @@
     </RelativeLayout>
 
     <Button
+        android:id="@+id/main_answer_a"
         style="@style/AppTheme.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Albert Park" />
+        android:text="@string/main_answer_a_sample" />
 
     <Button
+        android:id="@+id/main_answer_b"
         style="@style/AppTheme.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Aintree" />
+        android:text="@string/main_answer_b_sample" />
 
     <Button
+        android:id="@+id/main_answer_c"
         style="@style/AppTheme.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Autódromo do Estoril" />
+        android:text="@string/main_answer_c_sample" />
 
     <Button
+        android:id="@+id/main_answer_d"
         style="@style/AppTheme.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Autódromo José Carlos Pace" />
+        android:text="@string/main_answer_d_sample" />
 </LinearLayout>

@@ -2,4 +2,8 @@
     <string name="app_name">Guess The Track F1</string>
     <string name="splash_icon_desc">Splash Icon</string>
     <string name="main_track_image_desc">Main Track Picture</string>
+    <string name="main_answer_a_sample">Albert Park</string>
+    <string name="main_answer_b_sample">Aintree</string>
+    <string name="main_answer_c_sample">Autódromo do Estoril</string>
+    <string name="main_answer_d_sample">Autódromo José Carlos Pace</string>
 </resources>
