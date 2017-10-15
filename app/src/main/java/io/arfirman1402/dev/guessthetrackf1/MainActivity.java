@@ -2,12 +2,14 @@ package io.arfirman1402.dev.guessthetrackf1;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -23,6 +25,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.main_track_image)
     ImageView mainTrackImage;
 
+    @BindView(R.id.main_timer)
+    TextView mainTimer;
+
+    @BindView(R.id.main_right_answer)
+    TextView mainRightAnswer;
+
+    @BindView(R.id.main_track_number)
+    TextView mainTrackNumber;
+
+    @BindView(R.id.main_is_right_answer)
+    TextView mainIsRightAnswer;
+
     private Track finalAnswer;
     private List<Button> buttons;
 
@@ -30,15 +44,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int number;
     private Question question;
     private int score;
+    private int rightAnswer;
     private long timeInMillisStart;
     private long timeInMillisEnd;
+    private Handler timerHandler;
+    private Runnable timeRunnable;
+    private Handler answerHandler;
+    private Runnable answerRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-
         getQuestion();
     }
 
@@ -48,6 +66,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         score = 0;
         timeInMillisStart = GregorianCalendar.getInstance().getTimeInMillis();
         setQuestion();
+        startTimer();
+    }
+
+    private void startTimer() {
+        timerHandler = new Handler();
+        timeRunnable = new Runnable() {
+            @Override
+            public void run() {
+                timeInMillisEnd = GregorianCalendar.getInstance().getTimeInMillis();
+                long timeInMilisDelta = timeInMillisEnd - timeInMillisStart;
+                double timeInSecondsDelta = (double) timeInMilisDelta / (double) 1000;
+                mainTimer.setText("Time : " + timeInSecondsDelta + " s");
+                timerHandler.postDelayed(this, 10);
+            }
+        };
+        timerHandler.postDelayed(timeRunnable, 10);
     }
 
     private void setQuestion() {
@@ -58,6 +92,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         finalAnswer = question.getAnswer();
+
+        mainTrackNumber.setText("Number " + (number + 1) + " of " + questions.size());
 
         mainTrackImage.setImageResource(finalAnswer.getMap());
     }
@@ -74,6 +110,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             button.setOnClickListener(this);
             buttons.add(button);
         }
+
+        answerHandler = new Handler();
+        answerRunnable = new Runnable() {
+            @Override
+            public void run() {
+                mainIsRightAnswer.setVisibility(View.GONE);
+            }
+        };
     }
 
     @Override
@@ -97,13 +141,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void userChoose(int i) {
-        Track userChoosedTrack = question.getOptions().get(i);
-        if (userChoosedTrack.getId() == finalAnswer.getId()) {
-            Toast.makeText(this, "Your answer is Right. Good One.", Toast.LENGTH_SHORT).show();
+        Track userChoiceTrack = question.getOptions().get(i);
+        if (userChoiceTrack.getId() == finalAnswer.getId()) {
+            rightAnswer++;
             score += 10;
-        } else {
-            Toast.makeText(this, "Still wrong answer. Try again.", Toast.LENGTH_SHORT).show();
+            mainRightAnswer.setText("Right Answer = " + rightAnswer);
         }
+        isCorrectAnswer(userChoiceTrack.getId() == finalAnswer.getId());
         if (number < questions.size() - 1) {
             number++;
             setQuestion();
@@ -112,7 +156,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void isCorrectAnswer(boolean correctOne) {
+        answerHandler.removeCallbacks(answerRunnable);
+        if (correctOne) {
+            mainIsRightAnswer.setText("Correct, Vamos !!");
+            mainIsRightAnswer.setTextColor(ContextCompat.getColor(this, R.color.colorDarkGreen8));
+        } else {
+            mainIsRightAnswer.setText("Wrong One, Bwoah!!");
+            mainIsRightAnswer.setTextColor(ContextCompat.getColor(this, R.color.colorDarkRed9));
+        }
+        mainIsRightAnswer.setVisibility(View.VISIBLE);
+        answerHandler.postDelayed(answerRunnable, 500);
+    }
+
+    @Override
+    protected void onDestroy() {
+        timerHandler.removeCallbacks(timeRunnable);
+        answerHandler.removeCallbacks(answerRunnable);
+        super.onDestroy();
+    }
+
     private void finishQuiz() {
+        stopTimer();
         timeInMillisEnd = GregorianCalendar.getInstance().getTimeInMillis();
         long timeInMilisDelta = timeInMillisEnd - timeInMillisStart;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -121,12 +186,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 getQuestion();
-
             }
         });
         builder.setNegativeButton("I Quit", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+        builder.show();
+    }
+
+    private void stopTimer() {
+        timerHandler.removeCallbacks(timeRunnable);
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Quit");
+        builder.setMessage("Times still running. Are you sure quit from this quiz race ?");
+        builder.setPositiveButton("No", null);
+        builder.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
                 finish();
             }
         });
