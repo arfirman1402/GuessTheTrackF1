@@ -20,14 +20,14 @@ public class SplashActivity extends AppCompatActivity {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                goToMain();
+                goToIntro();
             }
         };
         handler.postDelayed(runnable, 3000);
     }
 
-    private void goToMain() {
-        Intent intent = new Intent(this, MainActivity.class);
+    private void goToIntro() {
+        Intent intent = new Intent(this, IntroActivity.class);
         startActivity(intent);
         finish();
     }
