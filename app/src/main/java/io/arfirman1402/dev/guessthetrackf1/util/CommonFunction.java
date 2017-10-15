@@ -57,7 +57,7 @@ public class CommonFunction {
         tracks.add(new Track(37, "Donington Park", R.drawable.donington_park, "Street circuit", "Clockwise", "Adelaide, Australia", "3.780 km (2.349 mi)", "Australian Grand Prix", "1985–1995", 11));
         tracks.add(new Track(38, "Fair Park", R.drawable.fair_park, "Street circuit", "Clockwise", "Adelaide, Australia", "3.780 km (2.349 mi)", "Australian Grand Prix", "1985–1995", 11));
         tracks.add(new Track(39, "Fuji Speedway", R.drawable.fuji_speedway, "Street circuit", "Clockwise", "Adelaide, Australia", "3.780 km (2.349 mi)", "Australian Grand Prix", "1985–1995", 11));
-        tracks.add(new Track(40, "Grand Prix of Long Beach", R.drawable.grand_prix_of_long_beach, "Street circuit", "Clockwise", "Adelaide, Australia", "3.780 km (2.349 mi)", "Australian Grand Prix", "1985–1995", 11));
+        /*tracks.add(new Track(40, "Grand Prix of Long Beach", R.drawable.grand_prix_of_long_beach, "Street circuit", "Clockwise", "Adelaide, Australia", "3.780 km (2.349 mi)", "Australian Grand Prix", "1985–1995", 11));*/
         tracks.add(new Track(41, "Hockenheimring", R.drawable.hockenheimring, "Street circuit", "Clockwise", "Adelaide, Australia", "3.780 km (2.349 mi)", "Australian Grand Prix", "1985–1995", 11));
         tracks.add(new Track(42, "Hungaroring", R.drawable.hungaroring, "Street circuit", "Clockwise", "Adelaide, Australia", "3.780 km (2.349 mi)", "Australian Grand Prix", "1985–1995", 11));
         tracks.add(new Track(43, "Indianapolis Motor Speedway", R.drawable.indianapolis_motor_speedway, "Street circuit", "Clockwise", "Adelaide, Australia", "3.780 km (2.349 mi)", "Australian Grand Prix", "1985–1995", 11));

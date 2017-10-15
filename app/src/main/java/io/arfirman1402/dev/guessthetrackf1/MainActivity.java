@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         questions = CommonFunction.getQuestions();
         number = 0;
         score = 0;
+        rightAnswer = 0;
         timeInMillisStart = GregorianCalendar.getInstance().getTimeInMillis();
         setQuestion();
         startTimer();
@@ -96,6 +97,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainTrackNumber.setText("Number " + (number + 1) + " of " + questions.size());
 
         mainTrackImage.setImageResource(finalAnswer.getMap());
+
+        mainRightAnswer.setText("Right Answer = " + rightAnswer);
     }
 
     private void initView() {
@@ -181,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         timeInMillisEnd = GregorianCalendar.getInstance().getTimeInMillis();
         long timeInMilisDelta = timeInMillisEnd - timeInMillisStart;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
         builder.setMessage("Congrats, you finish the race. Your score = " + score + ". Your time = " + ((double) timeInMilisDelta / (double) 1000) + " s . Wanna try again ?");
         builder.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
             @Override
